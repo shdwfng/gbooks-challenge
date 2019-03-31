@@ -7,8 +7,8 @@
   </head>
   <body>
     <div id="search-area">
-      <input id="search-bar" type="text" placeholder="Input search term here">
-      <button id="search-btn">Search</button>
+      <input id="search-bar" type="text" placeholder="Input search term here" value="harry potter">
+      <button id="search-btn" onclick="searchForBooks(document.getElementById('search-bar').value)">Search</button>
     </div>
     <div id="results-area">
       <ul id="results"></ul>
