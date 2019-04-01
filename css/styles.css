@@ -2,6 +2,32 @@
   color: red;
 }
 
-.result-info {
+.result-text {
 	display: inline;
+}
+
+.book-title {
+	font-size: large; 
+}
+
+.book-text {
+	font-size: medium;
+}
+
+.card-img {
+	width: 25%;
+}
+
+.img-col {
+	margin: 0 auto;
+	padding: 0;
+}
+
+.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
 }

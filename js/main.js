@@ -14,10 +14,12 @@ function searchForBooks(term) {
   // Fetch the data
   let results = [];
 
-  fetch(baseurl + term + '&key=' + API_KEY, { 
-    mode: 'cors', 
-    headers: {'Access-Control-Allow-Origin': '*'} 
-  })
+  fetch(baseurl + term + '&key=' + API_KEY, 
+    // Enable CORS to access images
+    { 
+      mode: 'cors', 
+      headers: {'Access-Control-Allow-Origin': '*'} 
+    })
     .then(response => response.json())
     .then(data => {
       let querydata = data;
@@ -28,7 +30,7 @@ function searchForBooks(term) {
                        authors:book.volumeInfo.authors,
                        title:book.volumeInfo.title,
                        subtitle:book.volumeInfo.subtitle,
-                       link:book.volumeInfo.previewLink,
+                       link:book.volumeInfo.infoLink,
                        cover:book.volumeInfo.imageLinks.thumbnail
                       };
 
@@ -42,18 +44,24 @@ function searchForBooks(term) {
 // Generate HTML and sets #results's contents to it
 function render(books, term) {
   
-  let resultslist = document.getElementById('results-area');
+  let resultslist = document.getElementById('results-list');
   let resultsheader = document.createElement('h1');
+  let headerarea = document.createElement('div');
+  let columnsarea = document.createElement('div');
 
   resultsheader.innerHTML = 'Results for: ' + term;
-  resultslist.appendChild(resultsheader);
+  headerarea.appendChild(resultsheader);
 
+  columnsarea.setAttribute('class', 'card-columns');
+  resultslist.insertBefore(columnsarea, resultslist.childNodes[0]);
+  
   books.forEach(book => {
     let resultcard = makeCard(book);
 
-    resultslist.appendChild(resultcard);
-    resultslist.insertBefore(resultsheader, resultslist.childNodes[0]);
+    columnsarea.appendChild(resultcard);
   });
+
+  resultslist.insertBefore(headerarea, columnsarea);
 }
 
 function makeCard(book) {
@@ -61,12 +69,11 @@ function makeCard(book) {
   // Create all of the elements for the bootstrap card
   let card = document.createElement('div');
   let row = document.createElement('div');
-  let imgarea = document.createElement('div');
   let cardarea = document.createElement('div');
   let cardbody = document.createElement('div');
-
   let img = document.createElement('img');
   let header = document.createElement('h2');
+  let link = document.createElement('a');
   let text = document.createElement('p');
 
 
@@ -75,22 +82,24 @@ function makeCard(book) {
   row.setAttribute('class', 'row no-gutters');
   cardbody.setAttribute('class', 'card-body');
   cardarea.setAttribute('class', 'col');
-  imgarea.setAttribute('class', 'col');
 
   img.setAttribute('src', book.cover);
   img.setAttribute('alt', book.title + 'cover');
+  img.setAttribute('class', 'card-img');
 
-  header.setAttribute('class', 'card-title');
-  header.innerHTML = book.title;
+  header.appendChild(link);
+  link.setAttribute('class', 'card-title book-title');
+  link.setAttribute('href', book.link);
+  link.setAttribute('target', '_blank');
+  link.innerHTML = book.title + ' >';
 
-  text.setAttribute('class', 'card-text');
-  text.innerHTML = book.authors;
+  text.setAttribute('class', 'card-text book-text');
+  text.innerHTML = 'By: ' + book.authors;
 
 
   // Nest elements
   card.appendChild(row);
-  row.appendChild(imgarea);
-  imgarea.appendChild(img);
+  row.appendChild(img);
   row.appendChild(cardarea);
   cardarea.appendChild(cardbody);
   cardbody.appendChild(header);
