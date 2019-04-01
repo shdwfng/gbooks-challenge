@@ -49,23 +49,65 @@ function render(books, term) {
   resultslist.appendChild(resultsheader);
 
   books.forEach(book => {
-    console.log(book);
+    let resultcard = makeCard(book);
 
-    // Each result gets a container area to hold the cover image and relevant information
-    let resultarea = document.createElement('div');
-    let resultpic = document.createElement('img');
-    let resultinfo = document.createElement('p');
-
-    // Add attributes to each element
-    resultinfo.innerHTML = book.title + '\n' + book.subtitle + '\n' + book.authors
-
-    resultpic.setAttribute('src', book.cover);
-
-    // Append elements to the DOM
-    resultarea.appendChild(resultpic);
-    resultarea.appendChild(resultinfo);
-
-    resultslist.appendChild(resultarea);
+    resultslist.appendChild(resultcard);
     resultslist.insertBefore(resultsheader, resultslist.childNodes[0]);
   });
+}
+
+function makeCard(book) {
+
+  // Create all of the elements for the bootstrap card
+  let card = document.createElement('div');
+  let row = document.createElement('div');
+  let imgarea = document.createElement('div');
+  let cardarea = document.createElement('div');
+  let cardbody = document.createElement('div');
+
+  let img = document.createElement('img');
+  let header = document.createElement('h2');
+  let text = document.createElement('p');
+
+
+  // Add attributes and information to elements as necessary
+  card.setAttribute('class', 'card');
+  row.setAttribute('class', 'row no-gutters');
+  cardbody.setAttribute('class', 'card-body');
+  cardarea.setAttribute('class', 'col');
+  imgarea.setAttribute('class', 'col');
+
+  img.setAttribute('src', book.cover);
+  img.setAttribute('alt', book.title + 'cover');
+
+  header.setAttribute('class', 'card-title');
+  header.innerHTML = book.title;
+
+  text.setAttribute('class', 'card-text');
+  text.innerHTML = book.authors;
+
+
+  // Nest elements
+  card.appendChild(row);
+  row.appendChild(imgarea);
+  imgarea.appendChild(img);
+  row.appendChild(cardarea);
+  cardarea.appendChild(cardbody);
+  cardbody.appendChild(header);
+
+  if (book.subtitle != undefined) addSubtitle(cardbody, book.subtitle); // Add an area for the subtitle if there is one
+
+  cardbody.appendChild(text);
+
+
+  // Return the final card
+  return card;
+}
+
+function addSubtitle(cardbody, subtitle) {
+
+  let subpara = document.createElement('p');
+  subpara.innerHTML = subtitle;
+
+  cardbody.appendChild(subpara);
 }
