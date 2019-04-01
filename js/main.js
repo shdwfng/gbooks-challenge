@@ -49,8 +49,10 @@ function render(books, term) {
   let headerarea = document.createElement('div');
   let columnsarea = document.createElement('div');
 
+  resultsheader.setAttribute('class', 'results-header');
   resultsheader.innerHTML = 'Results for: ' + term;
   headerarea.appendChild(resultsheader);
+  headerarea.setAttribute('border-top', '1px solid black');
 
   columnsarea.setAttribute('class', 'card-columns');
   resultslist.insertBefore(columnsarea, resultslist.childNodes[0]);

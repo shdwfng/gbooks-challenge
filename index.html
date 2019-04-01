@@ -15,13 +15,16 @@
     <title>Google Books Search Engine</title>
   </head>
   <body>
+    <!-- Welcome header -->
+    <div id="banner-area" class="row justify-content-center">
+      <h1 id="banner-text">Enter something to search Google Books for below!</h1>
+    </div>
+
     <!-- Search area -->
     <div id="search-area" class="container-fluid">
       <div class="row justify-content-center">
-        <div class="col-4">
-          <input id="search-bar" type="text" placeholder="Input search term here" value="star wars">
-          <button id="search-btn" onclick="searchForBooks(document.getElementById('search-bar').value)">Search</button>
-        </div>
+        <input id="search-bar" type="text" placeholder="Input search term here" value="star wars">
+        <button id="search-btn" onclick="searchForBooks(document.getElementById('search-bar').value)">Search</button>
       </div>
     </div>
 
@@ -33,9 +36,20 @@
       </div>
     </div>
 
-
     <!-- Native JS -->
     <script src="js/main.js"></script>
+
+    <!-- Allow searching by pressing the enter key -->
+    <script type="text/javascript">
+        var input = document.getElementById("search-bar");
+
+        input.addEventListener("keyup", function(event) {
+          if (event.keyCode === 13) {
+           event.preventDefault();
+           document.getElementById("search-btn").click();
+          }
+        });
+    </script>
 
     <!-- for babel transpilation -->
     <!-- <script src="main.min.js"></script> -->

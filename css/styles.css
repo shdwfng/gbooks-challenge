@@ -1,3 +1,26 @@
+/*Top level (body, h's, etc.) */
+body {
+	background-color: rgba(0, 0, 0, .15);
+}
+
+h1 {
+	font-size 1.5rem;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/*Class level*/
+.results-header {
+	font-size 1.5rem;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: lighter;
+
+	padding-top: 1.25rem;
+	padding-bottom: 1rem;
+
+	border-top: 3px solid white;
+}
+
 .error {
   color: red;
 }
@@ -8,10 +31,12 @@
 
 .book-title {
 	font-size: large; 
+	font-weight: bold;
 }
 
 .book-text {
 	font-size: medium;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 .card-img {
@@ -23,11 +48,35 @@
 	padding: 0;
 }
 
-.card-columns {
-  @include media-breakpoint-only(lg) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 5;
-  }
+
+/*ID level*/
+#results-list {
+	margin-right: 1rem;
+	margin-left: 1rem;
+}
+
+#banner-area {
+	margin-top: 5rem;
+}
+
+#banner-text {
+	margin-left: 2rem;
+	margin-right: 2rem;
+}
+
+#search-area {
+	margin-top: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+#search-bar {
+	width: 15rem;
+}
+
+#search-btn {
+	background-color: rgba(0, 0, 0, .5);
+	border: none;
+	color: white;
+	margin-left: 1rem;
+	width: 5rem;
 }
