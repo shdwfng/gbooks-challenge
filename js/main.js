@@ -1,7 +1,7 @@
 // Renders an error message
 function showError(msg) {
-  const html = `<li><p class="error">${msg}</p></li>`;
-  document.querySelector('#results').innerHTML = html;
+  const html = `<p class="error">${msg}</p>`;
+  document.querySelector('#results-list').innerHTML = html;
 }
 
 // Searches for books and returns a promise that resolves a JSON list
@@ -10,6 +10,7 @@ function searchForBooks(term) {
   // Local variables
   const baseurl = 'https://www.googleapis.com/books/v1/volumes?q=';
   const API_KEY = 'AIzaSyDnZY4zk1OKlvTTuLMBMjpUJc-_1Eln1nQ';
+  const errormsg = '*There was a problem retrieving results for your query*';
 
   // Fetch the data
   let results = [];
@@ -22,6 +23,8 @@ function searchForBooks(term) {
     })
     .then(response => response.json())
     .then(data => {
+
+      // Extract the relevant data from the retrieved items and use it to render the results
       let querydata = data;
       let items = querydata.items;
 
@@ -38,87 +41,35 @@ function searchForBooks(term) {
       })
 
       render(results, term);
-    });
+    })
+    .catch(showError(errormsg));
 }
 
 // Generate HTML and sets #results's contents to it
 function render(books, term) {
   
+  // Create DOM to display the results
   let resultslist = document.getElementById('results-list');
   let resultsheader = document.createElement('h1');
   let headerarea = document.createElement('div');
   let columnsarea = document.createElement('div');
 
+  // Set attributes
   resultsheader.setAttribute('class', 'results-header');
   resultsheader.innerHTML = 'Results for: ' + term;
   headerarea.appendChild(resultsheader);
-  headerarea.setAttribute('border-top', '1px solid black');
 
   columnsarea.setAttribute('class', 'card-columns');
+
+  // Append/insert elements
   resultslist.insertBefore(columnsarea, resultslist.childNodes[0]);
   
   books.forEach(book => {
+    
+    // For each book create a bootstrap card and append it to the results
     let resultcard = makeCard(book);
-
     columnsarea.appendChild(resultcard);
   });
 
   resultslist.insertBefore(headerarea, columnsarea);
-}
-
-function makeCard(book) {
-
-  // Create all of the elements for the bootstrap card
-  let card = document.createElement('div');
-  let row = document.createElement('div');
-  let cardarea = document.createElement('div');
-  let cardbody = document.createElement('div');
-  let img = document.createElement('img');
-  let header = document.createElement('h2');
-  let link = document.createElement('a');
-  let text = document.createElement('p');
-
-
-  // Add attributes and information to elements as necessary
-  card.setAttribute('class', 'card');
-  row.setAttribute('class', 'row no-gutters');
-  cardbody.setAttribute('class', 'card-body');
-  cardarea.setAttribute('class', 'col');
-
-  img.setAttribute('src', book.cover);
-  img.setAttribute('alt', book.title + 'cover');
-  img.setAttribute('class', 'card-img');
-
-  header.appendChild(link);
-  link.setAttribute('class', 'card-title book-title');
-  link.setAttribute('href', book.link);
-  link.setAttribute('target', '_blank');
-  link.innerHTML = book.title + ' >';
-
-  text.setAttribute('class', 'card-text book-text');
-  text.innerHTML = 'By: ' + book.authors;
-
-
-  // Nest elements
-  card.appendChild(row);
-  row.appendChild(img);
-  row.appendChild(cardarea);
-  cardarea.appendChild(cardbody);
-  cardbody.appendChild(header);
-
-  if (book.subtitle != undefined) addSubtitle(cardbody, book.subtitle); // Add an area for the subtitle if there is one
-
-  cardbody.appendChild(text);
-
-
-  // Return the final card
-  return card;
-}
-
-function addSubtitle(cardbody, subtitle) {
-
-  let subpara = document.createElement('p');
-  subpara.innerHTML = subtitle;
-
-  cardbody.appendChild(subpara);
 }
