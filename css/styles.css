@@ -50,6 +50,10 @@ h1 {
 
 
 /*ID level*/
+#error-div {
+	margin-left: 1rem;
+}
+
 #results-list {
 	margin-right: 1rem;
 	margin-left: 1rem;
